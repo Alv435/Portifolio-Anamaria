@@ -399,3 +399,145 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* =====================================
+   BOTÃO DE ALTERNÂNCIA DE TEMA
+===================================== */
+
+.theme-toggle {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #e5d9f3;
+    border-radius: 50%;
+    background: #f4edfc;
+    color: #604583;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.theme-toggle:hover {
+    transform: rotate(12deg) scale(1.08);
+}
+
+/* =====================================
+   TEMA ESCURO
+===================================== */
+
+body.dark-theme {
+    background: #171421;
+    color: #eee8f7;
+}
+
+body.dark-theme .header {
+    background: #211b2e;
+    border-color: #352a46;
+}
+
+body.dark-theme .logo {
+    color: #f0e8fb;
+}
+
+body.dark-theme .navigation a {
+    color: #d8c8ed;
+}
+
+body.dark-theme .navigation a:hover {
+    color: #c39bea;
+}
+
+body.dark-theme .hero {
+    background: #1b1726;
+}
+
+body.dark-theme .hero h1,
+body.dark-theme .hero h2,
+body.dark-theme .section h2 {
+    color: #f0e8fb;
+}
+
+body.dark-theme .hero p,
+body.dark-theme .section p {
+    color: #c5b9d3;
+}
+
+body.dark-theme .section {
+    background: #171421;
+}
+
+body.dark-theme .project-card {
+    background: #241e31;
+    border-color: #3c304e;
+}
+
+body.dark-theme .project-content h3 {
+    color: #f0e8fb;
+}
+
+body.dark-theme .project-content p {
+    color: #c5b9d3;
+}
+
+body.dark-theme .project-tech {
+    background: #392b4b;
+    color: #dfc5ff;
+}
+
+body.dark-theme .project-status {
+    background: #30253e;
+    color: #d9baf7;
+}
+
+body.dark-theme .project-links a {
+    color: #cba5f2;
+}
+
+body.dark-theme .tech-list span {
+    background: #30253e;
+    color: #e2d2f4;
+    border-color: #49375e;
+}
+
+body.dark-theme .contact {
+    background: #211b2e;
+}
+
+body.dark-theme .contact-links a {
+    color: #d5b4fa;
+}
+
+body.dark-theme footer {
+    background: #211b2e;
+    color: #c5b9d3;
+}
+
+body.dark-theme .button.secondary {
+    background: #30253e;
+    color: #e8d9fa;
+    border-color: #49375e;
+}
+
+body.dark-theme .theme-toggle {
+    background: #392b4b;
+    border-color: #59436f;
+    color: #f4e8ff;
+}
+
+/* Transição suave entre os temas */
+
+body,
+.header,
+.hero,
+.section,
+.project-card,
+footer,
+.theme-toggle {
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
+}
