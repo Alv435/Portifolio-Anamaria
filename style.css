@@ -458,8 +458,7 @@ body.dark-theme .theme-toggle {
 }
 
 body.dark-theme .theme-toggle-thumb {
-    transform: translateX(42px);
-    background: #c8a8ec;
+    transform: translate(34px, -50%);
 }
 
 body.dark-theme .light-option {
