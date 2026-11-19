@@ -1,55 +1,108 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    // =====================================
+    // RENDERIZAÇÃO DOS PROJETOS
+    // =====================================
+
     const projectsGrid = document.getElementById("projects-grid");
     const projects = window.portfolioProjects || [];
 
-    if (!projectsGrid) return;
+    if (projectsGrid) {
+        if (projects.length === 0) {
+            projectsGrid.textContent = "Nenhum projeto cadastrado ainda.";
+        } else {
+            projectsGrid.innerHTML = projects.map(project => {
+                const technologies = project.technologies
+                    .map(tech => `<span class="project-tech">${tech}</span>`)
+                    .join("");
 
-    if (projects.length === 0) {
-        projectsGrid.innerHTML = "<p>Nenhum projeto cadastrado ainda.</p>";
-        return;
+                const image = project.image
+                    ? `<img src="${project.image}" alt="Imagem do projeto ${project.name}">`
+                    : "";
+
+                const githubLink = project.github
+                    ? `<a href="${project.github}" target="_blank" rel="noopener noreferrer">GitHub</a>`
+                    : "";
+
+                const demoLink = project.demo
+                    ? `<a href="${project.demo}" target="_blank" rel="noopener noreferrer">Visualizar projeto</a>`
+                    : "";
+
+                return `
+                    <article class="project-card">
+                        ${image}
+
+                        <div class="project-content">
+                            <span class="project-category">${project.category}</span>
+                            <h3>${project.name}</h3>
+                            <p>${project.description}</p>
+
+                            <div class="project-technologies">
+                                ${technologies}
+                            </div>
+
+                            <span class="project-status">${project.status}</span>
+
+                            <div class="project-links">
+                                ${githubLink}
+                                ${demoLink}
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join("");
+        }
     }
 
-    projectsGrid.innerHTML = projects.map(project => {
-        const technologies = project.technologies
-            .map(tech => `<span class="project-tech">${tech}</span>`)
-            .join("");
+    // =====================================
+    // MODO CLARO E ESCURO
+    // =====================================
 
-        const image = project.image
-            ? `<img src="${project.image}" alt="Imagem do projeto ${project.name}">`
-            : "";
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
 
-        const githubLink = project.github
-            ? `<a href="${project.github}" target="_blank" rel="noopener noreferrer">GitHub</a>`
-            : "";
+    function applyTheme(theme) {
+        const isDark = theme === "dark";
 
-        const demoLink = project.demo
-            ? `<a href="${project.demo}" target="_blank" rel="noopener noreferrer">Visualizar projeto</a>`
-            : "";
+        document.body.classList.toggle("dark-theme", isDark);
 
-        return `
-            <article class="project-card">
-                ${image}
+        if (themeIcon) {
+            themeIcon.textContent = isDark ? "☀️" : "🌙";
+        }
 
-                <div class="project-content">
-                    <span class="project-category">${project.category}</span>
+        if (themeToggle) {
+            themeToggle.setAttribute(
+                "aria-label",
+                isDark ? "Ativar modo claro" : "Ativar modo escuro"
+            );
+        }
+    }
 
-                    <h3>${project.name}</h3>
+    let savedTheme = "light";
 
-                    <p>${project.description}</p>
+    try {
+        savedTheme = localStorage.getItem("portfolio-theme") || "light";
+    } catch (error) {
+        console.warn("Não foi possível recuperar a preferência de tema.");
+    }
 
-                    <div class="project-technologies">
-                        ${technologies}
-                    </div>
+    applyTheme(savedTheme);
 
-                    <span class="project-status">${project.status}</span>
+    if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            const newTheme = document.body.classList.contains("dark-theme")
+                ? "light"
+                : "dark";
 
-                    <div class="project-links">
-                        ${githubLink}
-                        ${demoLink}
-                    </div>
-                </div>
-            </article>
-        `;
-    }).join("");
+            applyTheme(newTheme);
+
+            try {
+                localStorage.setItem("portfolio-theme", newTheme);
+            } catch (error) {
+                console.warn("Não foi possível salvar a preferência de tema.");
+            }
+        });
+    }
+
 });
