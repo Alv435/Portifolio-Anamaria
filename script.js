@@ -63,22 +63,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeIcon = document.getElementById("theme-icon");
 
     function applyTheme(theme) {
-        const isDark = theme === "dark";
+    const isDark = theme === "dark";
 
-        document.body.classList.toggle("dark-theme", isDark);
+    document.body.classList.toggle("dark-theme", isDark);
 
-        if (themeIcon) {
-            themeIcon.textContent = isDark ? "☀️" : "🌙";
-        }
-
-        if (themeToggle) {
-            themeToggle.setAttribute(
-                "aria-label",
-                isDark ? "Ativar modo claro" : "Ativar modo escuro"
-            );
-        }
+    if (themeToggle) {
+        themeToggle.setAttribute("aria-checked", String(isDark));
+        themeToggle.setAttribute(
+            "aria-label",
+            isDark ? "Modo escuro ativado" : "Modo claro ativado"
+        );
     }
-
+}
     let savedTheme = "light";
 
     try {
