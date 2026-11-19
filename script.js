@@ -1,58 +1,55 @@
 
-const projects = [
-    {
-        name: "DevCafé",
-        description: "Uma plataforma de produtividade para organizar tarefas, ideias e acompanhar a rotina.",
-        image: "assets/images/devcafe.png",
-        technologies: ["HTML", "CSS", "JavaScript"],
-        status: "Em desenvolvimento",
-        github: "https://github.com/SEU-USUARIO/SEU-REPOSITORIO"
-    },
+document.addEventListener("DOMContentLoaded", () => {
+    const projectsGrid = document.getElementById("projects-grid");
+    const projects = window.portfolioProjects || [];
 
-    {
-        name: "Projeto acadêmico",
-        description: "Aplicação desenvolvida como parte dos estudos de Sistemas de Informação.",
-        image: "",
-        technologies: ["C#", "HTML", "CSS"],
-        status: "Em desenvolvimento",
-        github: "https://github.com/SEU-USUARIO/SEU-REPOSITORIO"
+    if (!projectsGrid) return;
+
+    if (projects.length === 0) {
+        projectsGrid.innerHTML = "<p>Nenhum projeto cadastrado ainda.</p>";
+        return;
     }
-];
 
-const projectsGrid = document.getElementById("projects-grid");
+    projectsGrid.innerHTML = projects.map(project => {
+        const technologies = project.technologies
+            .map(tech => `<span class="project-tech">${tech}</span>`)
+            .join("");
 
-projectsGrid.innerHTML = projects.map(project => `
-    <article class="project-card">
+        const image = project.image
+            ? `<img src="${project.image}" alt="Imagem do projeto ${project.name}">`
+            : "";
 
-        ${
-            project.image
-                ? `<img class="project-image"
-                    src="${project.image}"
-                    alt="Imagem do projeto ${project.name}">`
-                : `<div class="project-image"></div>`
-        }
+        const githubLink = project.github
+            ? `<a href="${project.github}" target="_blank" rel="noopener noreferrer">GitHub</a>`
+            : "";
 
-        <div class="project-info">
+        const demoLink = project.demo
+            ? `<a href="${project.demo}" target="_blank" rel="noopener noreferrer">Visualizar projeto</a>`
+            : "";
 
-            <h3>${project.name}</h3>
+        return `
+            <article class="project-card">
+                ${image}
 
-            <p>${project.description}</p>
+                <div class="project-content">
+                    <span class="project-category">${project.category}</span>
 
-            <div class="project-tags">
-                ${project.technologies.map(tech =>
-                    `<span>${tech}</span>`
-                ).join("")}
-            </div>
+                    <h3>${project.name}</h3>
 
-            <p>${project.status}</p>
+                    <p>${project.description}</p>
 
-            <a class="project-link"
-               href="${project.github}"
-               target="_blank"
-               rel="noopener noreferrer">
-                Ver no GitHub ↗
-            </a>
+                    <div class="project-technologies">
+                        ${technologies}
+                    </div>
 
-        </div>
-    </article>
-`).join("");
+                    <span class="project-status">${project.status}</span>
+
+                    <div class="project-links">
+                        ${githubLink}
+                        ${demoLink}
+                    </div>
+                </div>
+            </article>
+        `;
+    }).join("");
+});
