@@ -1,5 +1,5 @@
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
     // =====================================
     // RENDERIZAÇÃO DOS PROJETOS
@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
             projectsGrid.textContent = "Nenhum projeto cadastrado ainda.";
         } else {
             projectsGrid.innerHTML = projects.map(project => {
-
                 const technologies = (project.technologies || [])
                     .map(tech => `<span class="project-tech">${tech}</span>`)
                     .join("");
@@ -33,21 +32,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 return `
                     <article class="project-card">
                         ${image}
-
                         <div class="project-content">
                             <span class="project-category">${project.category}</span>
-
                             <h3>${project.name}</h3>
-
                             <p>${project.description}</p>
 
                             <div class="project-technologies">
                                 ${technologies}
                             </div>
 
-                            <span class="project-status">
-                                ${project.status}
-                            </span>
+                            <span class="project-status">${project.status}</span>
 
                             <div class="project-links">
                                 ${githubLink}
@@ -61,57 +55,53 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =====================================
-    // MODO CLARO E ESCURO
+    // BOTÃO DE TEMA
     // =====================================
 
     const themeToggle = document.getElementById("theme-toggle");
 
-    function applyTheme(theme) {
-        const isDark = theme === "dark";
-
-        document.body.classList.toggle("dark-theme", isDark);
-
-        if (themeToggle) {
-            themeToggle.setAttribute("aria-checked", String(isDark));
-
-            themeToggle.setAttribute(
-                "aria-label",
-                isDark ? "Ativar modo claro" : "Ativar modo escuro"
-            );
-        }
+    if (!themeToggle) {
+        console.error("Botão de tema não encontrado. Verifique o id theme-toggle no HTML.");
+        return;
     }
 
-    // Recupera o tema salvo
+    function setTheme(theme) {
+        const darkMode = theme === "dark";
 
-    let savedTheme = "light";
+        document.body.classList.toggle("dark-theme", darkMode);
+
+        themeToggle.setAttribute("aria-checked", darkMode ? "true" : "false");
+
+        themeToggle.setAttribute(
+            "aria-label",
+            darkMode ? "Ativar modo claro" : "Ativar modo escuro"
+        );
+    }
+
+    // Recupera a preferência salva
+    let currentTheme = "light";
 
     try {
-        savedTheme = localStorage.getItem("portfolio-theme") || "light";
+        currentTheme = localStorage.getItem("portfolio-theme") || "light";
     } catch (error) {
-        console.warn("Não foi possível recuperar a preferência de tema.");
+        console.warn("Não foi possível acessar o armazenamento local.");
     }
 
-    // Aplica o tema inicial
-
-    applyTheme(savedTheme);
+    setTheme(currentTheme);
 
     // Alterna o tema ao clicar
+    themeToggle.addEventListener("click", function () {
+        const isDark = document.body.classList.contains("dark-theme");
 
-    if (themeToggle) {
-        themeToggle.addEventListener("click", () => {
+        const newTheme = isDark ? "light" : "dark";
 
-            const newTheme = document.body.classList.contains("dark-theme")
-                ? "light"
-                : "dark";
+        setTheme(newTheme);
 
-            applyTheme(newTheme);
-
-            try {
-                localStorage.setItem("portfolio-theme", newTheme);
-            } catch (error) {
-                console.warn("Não foi possível salvar a preferência de tema.");
-            }
-        });
-    }
+        try {
+            localStorage.setItem("portfolio-theme", newTheme);
+        } catch (error) {
+            console.warn("Não foi possível salvar a preferência de tema.");
+        }
+    });
 
 });
